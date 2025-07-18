@@ -60,6 +60,10 @@ class CallTicketController extends Controller
             'status' => ['required', Rule::in(CallTicket::STATUS_OPTIONS)],
         ]);
 
+        if ($data['status'] === 'escalated' && !$request->user()->isSupervisor() && !$request->user()->isAdmin()) {
+            abort(403, 'You are not authorized to escalate calls.');
+        }
+
         $callTicket->update($data);
 
         return new CallTicketResource($callTicket);
