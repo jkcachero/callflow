@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class CallTicket extends Model
 {
@@ -22,4 +23,9 @@ class CallTicket extends Model
         'status',
         'assigned_user_id',
     ];
+
+    public function assignedAgent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_user_id');
+    }
 }

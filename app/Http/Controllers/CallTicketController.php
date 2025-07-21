@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CallTicketResource;
 use App\Models\CallTicket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
+use Inertia\Inertia;
 
 class CallTicketController extends Controller
 {
@@ -14,7 +16,23 @@ class CallTicketController extends Controller
      */
     public function index()
     {
-        //
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $query = CallTicket::query();
+
+        if ($user->isAgent()) {
+            $query->where('assigned_user_id', $user->id);
+        }
+
+        $callTickets = $query
+            ->where('status', '!=', 'escalated')
+            ->with('assignedAgent')
+            ->paginate(10);
+
+        return Inertia::render('CallTicket/Index', [
+            'callTickets' => $callTickets,
+        ]);
     }
 
     /**

@@ -15,6 +15,10 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('call-tickets', [CallTicketController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('call-tickets.index');
+
 Route::put('call-tickets/{callTicket}', [CallTicketController::class, 'update'])
     ->middleware(['auth', 'verified'])
     ->name('call-tickets.update');
