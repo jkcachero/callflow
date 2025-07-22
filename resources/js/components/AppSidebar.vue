@@ -14,18 +14,18 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Call Tickets',
+        href: '/call-tickets',
+        icon: BookOpen,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
+        href: 'https://github.com/jkcachero/callflow',
         icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
     },
 ];
 </script>
