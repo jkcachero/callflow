@@ -56,7 +56,18 @@ class CallTicketController extends Controller
      */
     public function show(string $id)
     {
-        //
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+
+        $callTicket = CallTicket::findOrFail($id);
+
+        if ($user->isSupervisor() || $user->isAdmin()) {
+            $callTicket->load('assignedAgent');
+        }
+
+        return Inertia::render('CallTicket/Show', [
+            'callTicket' => $callTicket,
+        ]);
     }
 
     /**

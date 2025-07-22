@@ -53,7 +53,6 @@ function fetchPage(url: string | null) {
         <div class="flex h-full flex-1 flex-col rounded-xl overflow-x-auto">
             <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                 <div class="mt-4 flex flex-col justify-center">
-                    <a class="mx-auto" :href="route('dashboard')">Dashboard</a>
                     <h1 class="mx-auto text-xl font-bold py-4">Call Tickets</h1>
                     <table class="w-3/4 mx-auto">
                         <thead>
@@ -62,6 +61,7 @@ function fetchPage(url: string | null) {
                                 <th class="border border-gray-300 px-4 py-2">Caller Number</th>
                                 <th class="border border-gray-300 px-4 py-2">Status</th>
                                 <th class="border border-gray-300 px-4 py-2">Assigned Agent</th>
+                                <th class="border border-gray-300 px-4 py-2">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -71,6 +71,9 @@ function fetchPage(url: string | null) {
                                 <td class="border border-gray-300 px-4 py-2">{{ callTicket.status }}</td>
                                 <td class="border border-gray-300 px-4 py-2">
                                     {{ callTicket.assigned_agent.role[0].toUpperCase() + callTicket.assigned_agent.role.slice(1) }}: {{ callTicket.assigned_agent.name }}
+                                </td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    <button class="px-2 py-1 bg-green-800 text-xs font-bold uppercase border rounded" @click.prevent="fetchPage('call-tickets/'+callTicket.id)">Show</button>
                                 </td>
                             </tr>
                         </tbody>

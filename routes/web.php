@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CallTicketController;
 use App\Http\Controllers\CallTicketReassignController;
 use App\Http\Controllers\UserController;
@@ -18,6 +17,10 @@ Route::get('dashboard', function () {
 Route::get('call-tickets', [CallTicketController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('call-tickets.index');
+
+Route::get('call-tickets/{callTicket}', [CallTicketController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('call-tickets.show');
 
 Route::put('call-tickets/{callTicket}', [CallTicketController::class, 'update'])
     ->middleware(['auth', 'verified'])
