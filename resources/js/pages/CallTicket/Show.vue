@@ -128,7 +128,7 @@ function back() {
                     <hr class="my-4">
 
                     <div class="flex flex-col items-center">
-                        <h3>Note</h3>
+                        <h3>Log Note</h3>
                         <textarea class="mt-4 px-3 py-2 w-full border border-gray rounded-xl" v-model="newNote" rows="6" cols="50"></textarea>
                         <button class="w-32 px-3 py-2 mt-4 bg-blue-600 rounded-xl disabled:opacity-50" @click="addNote" :disabled="submittingNote || !newNote.trim()">
                             <span v-if="submittingNote">Submitting...</span>
