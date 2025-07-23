@@ -14,7 +14,7 @@ test('allows supervisor to escalate a call ticket', function () {
 
     actingAs($supervisor)
         ->put(route('call-tickets.update', $callTicket), ['status' => 'escalated'])
-        ->assertStatus(Response::HTTP_OK);
+        ->assertStatus(Response::HTTP_FOUND);
 
     expect($callTicket->fresh()->status)->toBe('escalated');
 });

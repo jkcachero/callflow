@@ -95,7 +95,9 @@ class CallTicketController extends Controller
 
         $callTicket->update($data);
 
-        return new CallTicketResource($callTicket);
+        return redirect()
+            ->back()
+            ->with('success', 'Status updated successfully.');
     }
 
     /**

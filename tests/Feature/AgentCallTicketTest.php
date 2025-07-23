@@ -18,7 +18,7 @@ it('allows agent to update their assigned call status', function () {
 
     actingAs($agent)
         ->put(route('call-tickets.update', $callTicket), ['status' => 'completed'])
-        ->assertStatus(Response::HTTP_OK);
+        ->assertStatus(Response::HTTP_FOUND);
 
     expect($callTicket->fresh()->status)->toBe('completed');
 });

@@ -41,16 +41,47 @@ const breadcrumbs: BreadcrumbItem[] = [
 const page = usePage<{ callTicket: CallTicket }>();
 const callTicket = page.props.callTicket;
 
+const statusOptions = ['active', 'completed', 'forwarded', 'escalated'];
+const status = ref(callTicket.status);
+const updatingStatus = ref(false);
+const statusError = ref<string | null>(null);
+
 const newNote = ref('');
+const submittingNote = ref(false);
+const noteError = ref<string | null>(null);
 
 function addNote() {
     if (!newNote.value.trim()) return;
-
+    submittingNote.value = true;
+    noteError.value = null;
     Inertia.post(route('call-tickets.logs.store', callTicket.id), { note: newNote.value }, {
         preserveScroll: true,
         onSuccess: () => {
             newNote.value = '';
-        }
+        },
+        onError: (errors) => {
+            noteError.value = errors.note ? errors.note[0] : 'Failed to add note.';
+        },
+        onFinish: () => {
+            submittingNote.value = false;
+        },
+    });
+}
+
+function updateStatus() {
+    if (status.value === callTicket.status) return;
+    updatingStatus.value = true;
+    statusError.value = null;
+    Inertia.put(route('call-tickets.update', callTicket.id), { status: status.value }, {
+        onSuccess: () => {
+            // Optionally update local callTicket.status here if needed
+        },
+        onError: (errors) => {
+            statusError.value = errors.status ? errors.status[0] : 'Failed to update status.';
+        },
+        onFinish: () => {
+            updatingStatus.value = false;
+        },
     });
 }
 
@@ -73,6 +104,18 @@ function back() {
                     <p class="text-gray-300"><strong>Status: </strong> {{ callTicket.status }}</p>
                     <p class="text-gray-300"><strong>Assigned Agent: </strong> {{ callTicket.assigned_agent.name }} ({{ callTicket.assigned_agent.role }})</p>
 
+                    <div class="flex mt-4 items-center justify-start gap-3">
+                        <label for="status" class="block font-semibold mb-1">Update Status</label>
+                        <select id="status" v-model="status" :disabled="updatingStatus" class="border rounded p-2">
+                            <option v-for="option in statusOptions" :key="option" :value="option">{{ option }}</option>
+                        </select>
+                        <button @click="updateStatus" :disabled="updatingStatus || status === callTicket.status" class="ml-2 px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50">
+                            <span v-if="updatingStatus">Updating...</span>
+                            <span v-else>Update</span>
+                        </button>
+                    </div>
+                    <p v-if="statusError" class="text-red-500 mt-1">{{ statusError }}</p>
+
                     <hr class="my-4">
 
                     <h2 class="mx-auto mb-4 font-bold">Call Logs</h2>
@@ -87,7 +130,11 @@ function back() {
                     <div class="flex flex-col items-center">
                         <h3>Note</h3>
                         <textarea class="mt-4 px-3 py-2 w-full border border-gray rounded-xl" v-model="newNote" rows="6" cols="50"></textarea>
-                        <button class="w-32 px-3 py-2 mt-4 bg-blue-600 rounded-xl" @click="addNote">Add Note</button>
+                        <button class="w-32 px-3 py-2 mt-4 bg-blue-600 rounded-xl disabled:opacity-50" @click="addNote" :disabled="submittingNote || !newNote.trim()">
+                            <span v-if="submittingNote">Submitting...</span>
+                            <span v-else>Add Note</span>
+                        </button>
+                        <p v-if="noteError" class="text-red-500 mt-1">{{ noteError }}</p>
                     </div>
                 </div>
             </div>
