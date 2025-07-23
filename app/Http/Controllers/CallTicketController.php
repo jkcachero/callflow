@@ -59,7 +59,7 @@ class CallTicketController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $callTicket = CallTicket::findOrFail($id);
+        $callTicket = CallTicket::with('assignedAgent', 'callLogs.user')->findOrFail($id);
 
         if ($user->isSupervisor() || $user->isAdmin()) {
             $callTicket->load('assignedAgent');

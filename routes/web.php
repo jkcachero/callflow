@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CallLogController;
 use App\Http\Controllers\CallTicketController;
 use App\Http\Controllers\CallTicketReassignController;
 use App\Http\Controllers\UserController;
@@ -29,6 +30,10 @@ Route::put('call-tickets/{callTicket}', [CallTicketController::class, 'update'])
 Route::patch('call-tickets/{callTicket}/reassign', CallTicketReassignController::class)
     ->middleware(['auth', 'verified'])
     ->name('call-tickets.reassign');
+
+Route::post('call-tickets/{callTicket}/logs', [CallLogController::class, 'store'])
+    ->middleware(['auth', 'verified'])
+    ->name('call-tickets.logs.store');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
