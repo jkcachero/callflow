@@ -113,3 +113,14 @@ it('requires note field', function () {
         ->post(route('call-tickets.logs.store', $callTicket), ['note' => ''])
         ->assertSessionHasErrors('note');
 });
+
+it('prevents agent from reassigning call ticket', function () {
+    $agent = User::factory()->create(['role' => 'agent']);
+    $agent2 = User::factory()->create(['role' => 'agent']);
+    $callTicket = CallTicket::factory()->create(['assigned_user_id' => $agent->id]);
+
+    $this->actingAs($agent)
+        ->patch(route('call-tickets.reassign', $callTicket), ['assigned_user_id' => $agent2->id])
+        ->assertStatus(403);
+});
+

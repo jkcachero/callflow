@@ -7,7 +7,7 @@ use App\Models\User;
 
 class CallTicketPolicy
 {
-    public function update(User $user, CallTicket $callTicket)
+    public function update(User $user, CallTicket $callTicket): bool
     {
         if ($user->isAdmin() || $user->isSupervisor()) {
             return true;
@@ -18,5 +18,10 @@ class CallTicketPolicy
         }
 
         return false;
+    }
+
+    public function reassign(User $user, CallTicket $callTicket): bool
+    {
+        return $user->isSupervisor() || $user->isAdmin();
     }
 }

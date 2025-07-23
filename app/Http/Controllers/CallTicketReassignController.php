@@ -13,7 +13,7 @@ class CallTicketReassignController extends Controller
      */
     public function __invoke(Request $request, CallTicket $callTicket)
     {
-        $this->authorize('update', $callTicket);
+        $this->authorize('reassign', $callTicket);
 
         $data = $request->validate([
             'assigned_user_id' => [

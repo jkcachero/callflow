@@ -38,12 +38,12 @@ class CallLogController extends Controller
 
         CallLog::create([
             'call_ticket_id' => $callTicket->id,
-            'user_id' => Auth::user()->id,
+            'user_id' => $request->user()->id,
             'note' => $data['note'],
             'log_type' => 'note',
         ]);
 
-        return redirect()->back()->with('success', 'Note added successfully');
+        return redirect()->back()->with('success', 'Note added successfully.');
     }
 
     /**
