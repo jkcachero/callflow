@@ -59,10 +59,16 @@ class CallTicketController extends Controller
         /** @var \App\Models\User $user */
         $user = Auth::user();
 
-        $callTicket = CallTicket::with('assignedAgent', 'callLogs.user')->findOrFail($id);
+        $query = CallTicket::query();
 
-        if ($user->isSupervisor() || $user->isAdmin()) {
-            $callTicket->load('assignedAgent');
+        if ($user->isAgent()) {
+            $query->where('assigned_user_id', $user->id);
+        }
+
+        $callTicket = $query->with('assignedAgent', 'callLogs.user')->find($id);
+
+        if (!$callTicket) {
+            return redirect()->route('call-tickets.index')->with('error', 'You are not authorized to view this call ticket.');
         }
 
         return Inertia::render('CallTicket/Show', [
