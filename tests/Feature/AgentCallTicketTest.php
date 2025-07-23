@@ -78,6 +78,17 @@ it('allows supervisor to add note to any call ticket', function () {
     ]);
 });
 
+it('redirects agent when trying to view unassigned call ticket', function () {
+    $agent = User::factory()->create(['role' => 'agent']);
+    $otherUser = User::factory()->create(['role' => 'agent']);
+    $callTicket = CallTicket::factory()->create(['assigned_user_id' => $otherUser->id]);
+
+    $response = $this->actingAs($agent)->get(route('call-tickets.show', $callTicket));
+
+    $response->assertRedirect(route('call-tickets.index'));
+    $response->assertSessionHas('error', 'You are not authorized to view this call ticket.');
+});
+
 it('allows admin to add note to any call ticket', function () {
     $admin = User::factory()->create(['role' => 'admin']);
     $callTicket = CallTicket::factory()->create();
