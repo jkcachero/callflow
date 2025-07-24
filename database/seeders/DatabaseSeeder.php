@@ -22,8 +22,19 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin'
         ]);
 
-        CallTicket::factory(50)->create([
+        $supervisor = User::factory()->create([
+            'name' => 'Supervisor',
+            'email' => 'jkcachero@supervisor.com',
+            'role' => 'supervisor'
+        ]);
+
+        CallTicket::factory(10)->create([
             'assigned_user_id' => $admin->id,
+            'status' => 'active'
+        ]);
+
+        CallTicket::factory(10)->create([
+            'assigned_user_id' => $supervisor->id,
             'status' => 'active'
         ]);
 
