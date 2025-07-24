@@ -4,22 +4,41 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
+import { computed } from 'vue';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: '/dashboard',
-        icon: LayoutGrid,
-    },
-    {
-        title: 'Call Tickets',
-        href: '/call-tickets',
-        icon: BookOpen,
-    },
-];
+interface User {
+    role: string;
+}
+
+const page = usePage<{ auth: { user: User } }>();
+
+const mainNavItems = computed(() => {
+    const items = [
+        {
+            title: 'Dashboard',
+            href: '/dashboard',
+            icon: LayoutGrid,
+        },
+        {
+            title: 'Call Tickets',
+            href: '/call-tickets',
+            icon: BookOpen,
+        },
+    ];
+
+    if (['supervisor', 'admin'].includes(page.props.auth.user.role)) {
+        items.push({
+            title: 'Reports',
+            href: '/reports',
+            icon: Folder,
+        });
+    }
+
+    return items;
+});
 
 const footerNavItems: NavItem[] = [
     {

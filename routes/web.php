@@ -3,6 +3,7 @@
 use App\Http\Controllers\CallLogController;
 use App\Http\Controllers\CallTicketController;
 use App\Http\Controllers\CallTicketReassignController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -38,6 +39,10 @@ Route::post('call-tickets/{callTicket}/logs', [CallLogController::class, 'store'
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
 });
+
+Route::get('reports', [ReportController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('reports.index');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
