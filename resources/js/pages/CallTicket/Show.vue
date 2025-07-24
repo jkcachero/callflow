@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 import { route } from 'ziggy-js';
@@ -37,11 +37,30 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/call-tickets',
     },
 ];
+interface User {
+    role: string;
+}
 
-const page = usePage<{ callTicket: CallTicket }>();
+const page = usePage<{
+    callTicket: CallTicket,
+    auth: { user: User }
+}>();
 const callTicket = page.props.callTicket;
 
-const statusOptions = ['active', 'completed', 'forwarded', 'escalated'];
+const statusOptions = computed(() => {
+    const status = [
+        'active',
+        'completed',
+        'forwarded',
+    ];
+
+    if (['supervisor', 'admin'].includes(page.props.auth.user.role)) {
+        status.push('escalated');
+    }
+
+    return status;
+})
+
 const status = ref(callTicket.status);
 const updatingStatus = ref(false);
 const statusError = ref<string | null>(null);
