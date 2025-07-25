@@ -31,14 +31,28 @@ interface CallTicket {
     call_logs: CallLog[];
 }
 
+interface Agent {
+    id: number;
+    name: string;
+}
+
+const props = defineProps<{
+    callTicket: CallTicket;
+    agent: Agent;
+}>();
+
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Call Tickets',
-        href: '/call-tickets',
+        title: 'Agent Reports',
+        href: '/agent-reports'
     },
     {
-        title: 'Call Logs',
-        href: '',
+        title: 'Agent Tickets',
+        href: route('agents.tickets.index', props.agent.id)
+    },
+    {
+        title: `Ticket #${props.callTicket.id}`,
+        href: ''
     },
 ];
 
@@ -50,7 +64,6 @@ const page = usePage<{
     callTicket: CallTicket,
     auth: { user: User }
 }>();
-const callTicket = page.props.callTicket;
 
 const statusOptions = computed(() => {
     const status = [
@@ -66,7 +79,7 @@ const statusOptions = computed(() => {
     return status;
 })
 
-const status = ref(callTicket.status);
+const status = ref(props.callTicket.status);
 const updatingStatus = ref(false);
 const statusError = ref<string | null>(null);
 
@@ -78,7 +91,7 @@ function addNote() {
     if (!newNote.value.trim()) return;
     submittingNote.value = true;
     noteError.value = null;
-    Inertia.post(route('call-tickets.logs.store', callTicket.id), { note: newNote.value }, {
+    Inertia.post(route('call-tickets.logs.store', props.callTicket.id), { note: newNote.value }, {
         preserveScroll: true,
         onSuccess: () => {
             newNote.value = '';
@@ -93,10 +106,10 @@ function addNote() {
 }
 
 function updateStatus() {
-    if (status.value === callTicket.status) return;
+    if (status.value === props.callTicket.status) return;
     updatingStatus.value = true;
     statusError.value = null;
-    Inertia.put(route('call-tickets.update', callTicket.id), { status: status.value }, {
+    Inertia.put(route('call-tickets.update', props.callTicket.id), { status: status.value }, {
         onSuccess: () => {
             // Optionally update local callTicket.status here if needed
         },
@@ -160,3 +173,4 @@ function updateStatus() {
         </div>
     </AppLayout>
 </template>
+

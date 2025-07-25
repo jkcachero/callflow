@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { Folder, Github, LayoutGrid, MessageSquareWarning, Phone, Ticket } from 'lucide-vue-next';
+import { Github, LayoutGrid, MessageSquareWarning, Phone, Ticket } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 
@@ -32,8 +32,8 @@ const mainNavItems = computed(() => {
     if (['supervisor', 'admin'].includes(page.props.auth.user.role)) {
         items.push(
             {
-                title: 'Reports',
-                href: '/reports',
+                title: 'Agent Reports',
+                href: '/agent-reports',
                 icon: MessageSquareWarning,
             },
             {

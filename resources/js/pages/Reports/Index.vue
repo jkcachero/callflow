@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { BreadcrumbItem } from '@/types';
+import { Inertia } from '@inertiajs/inertia';
 import { Head, usePage } from '@inertiajs/vue3';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Call Logs',
-        href: '/call-tickets',
+        title: 'Reports',
+        href: '',
     },
 ];
 
@@ -17,6 +18,7 @@ interface TicketsByAgent {
     forwarded: number;
     escalated: number;
     total: number;
+    route: string;
 }
 
 interface EscalationRecord {
@@ -33,6 +35,11 @@ const page = usePage<{
 const statusCounts = page.props.statusCounts;
 const ticketsByAgent = page.props.ticketsByAgent || [];
 const escalationsOverTime = page.props.escalationsOverTime || [];
+
+function showagentTickets(url: string | null) {
+    if (!url) return;
+    Inertia.visit(url, { preserveState: true, preserveScroll: true });
+}
 </script>
 
 <template>
@@ -65,6 +72,7 @@ const escalationsOverTime = page.props.escalationsOverTime || [];
                     <th class="border border-gray-800 px-4 py-2 text-right">Forwarded</th>
                     <th class="border border-gray-800 px-4 py-2 text-right">Escalated</th>
                     <th class="border border-gray-800 px-4 py-2 text-right">Total</th>
+                    <th class="border border-gray-800 px-4 py-2 text-right">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -75,6 +83,9 @@ const escalationsOverTime = page.props.escalationsOverTime || [];
                     <td class="border border-gray-800 px-4 py-2 text-right">{{ agent.forwarded }}</td>
                     <td class="border border-gray-800 px-4 py-2 text-right">{{ agent.escalated }}</td>
                     <td class="border border-gray-800 px-4 py-2 text-right">{{ agent.total }}</td>
+                    <td class="border border-gray-800 px-4 py-2 text-right">
+                        <button class="px-2 py-1 bg-green-800 text-xs font-bold uppercase border rounded" @click.prevent="showagentTickets(agent.route)">Show</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
