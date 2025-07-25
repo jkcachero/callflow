@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AgentTicketsController;
 use App\Http\Controllers\CallLogController;
 use App\Http\Controllers\CallTicketController;
 use App\Http\Controllers\CallTicketReassignController;
@@ -44,6 +45,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('reports', [ReportController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('reports.index');
+
+Route::get('agents/{agent}/tickets', [AgentTicketsController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('agents.tickets.index');
+
+Route::get('agents/{agent}/tickets/{ticket}', [AgentTicketsController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('agents.tickets.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('telephone', [PhoneIntegrationController::class, 'index'])->name('telephone.index');
