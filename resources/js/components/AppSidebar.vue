@@ -5,7 +5,7 @@ import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { Folder, Github, LayoutGrid, MessageSquareWarning, Phone, Ticket } from 'lucide-vue-next';
 import AppLogo from './AppLogo.vue';
 import { computed } from 'vue';
 
@@ -25,16 +25,23 @@ const mainNavItems = computed(() => {
         {
             title: 'Call Tickets',
             href: '/call-tickets',
-            icon: BookOpen,
+            icon: Ticket,
         },
     ];
 
     if (['supervisor', 'admin'].includes(page.props.auth.user.role)) {
-        items.push({
-            title: 'Reports',
-            href: '/reports',
-            icon: Folder,
-        });
+        items.push(
+            {
+                title: 'Reports',
+                href: '/reports',
+                icon: MessageSquareWarning,
+            },
+            {
+                title: 'Phone Integrations',
+                href: '/telephone',
+                icon: Phone,
+            },
+        );
     }
 
     return items;
@@ -44,7 +51,7 @@ const footerNavItems: NavItem[] = [
     {
         title: 'Github Repo',
         href: 'https://github.com/jkcachero/callflow',
-        icon: Folder,
+        icon: Github,
     },
 ];
 </script>

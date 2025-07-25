@@ -33,8 +33,12 @@ interface CallTicket {
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Call Logs',
+        title: 'Call Tickets',
         href: '/call-tickets',
+    },
+    {
+        title: 'Call Logs',
+        href: '',
     },
 ];
 
@@ -117,8 +121,7 @@ function back() {
             <div class="relative min-h-[100vh] flex-1 rounded-xl border border-sidebar-border/70 md:min-h-min dark:border-sidebar-border">
                 <div class="flex flex-col max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                     <div class="flex flex-col mb-4 items-center">
-                        <button class="px-3 py-2 rounded-xl border border-gray-800 self-start" @click="back">Back</button>
-                        <h1 class="text-lg font-bold">Call Ticket Details</h1>
+                        <h1 class="text-2xl">Call Ticket Details</h1>
                     </div>
                     <p class="text-gray-300"><strong>Caller: </strong> {{ callTicket.caller_name }} ({{ callTicket.caller_number }})</p>
                     <p class="text-gray-300"><strong>Status: </strong> {{ callTicket.status }}</p>
