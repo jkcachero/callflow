@@ -28,8 +28,9 @@ class ReportController extends Controller
             ->pluck('count', 'status');
 
         // Tickets by agent
-        $ticketsByAgent = CallTicket::selectRaw('assigned_user_id, status, COUNT(*) as count')
+        $ticketsByAgent = CallTicket::selectRaw('assigned_user_id, status, COUNT(*) as count, MAX(updated_at) as latest_update')
             ->groupBy('assigned_user_id', 'status')
+            ->orderByDesc('latest_update')
             ->get()
             ->groupBy('assigned_user_id')
             ->map(function ($group) {
@@ -43,6 +44,7 @@ class ReportController extends Controller
                     'forwarded' => $counts['forwarded'] ?? 0,
                     'escalated' => $counts['escalated'] ?? 0,
                     'total' => array_sum($counts),
+                    'route' => route('agents.tickets.index', [$group->first()->assignedAgent->id]),
                 ];
             })->values();
 

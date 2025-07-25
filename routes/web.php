@@ -42,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('users', UserController::class)->except(['show']);
 });
 
-Route::get('reports', [ReportController::class, 'index'])
+Route::get('agent-reports', [ReportController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('reports.index');
 
