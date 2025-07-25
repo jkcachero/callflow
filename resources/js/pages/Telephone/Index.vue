@@ -5,7 +5,7 @@ import { Head } from '@inertiajs/vue3';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
-        title: 'Dashboard',
+        title: 'Telephone Integrations',
         href: '/telephone',
     },
 ]

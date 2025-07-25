@@ -37,7 +37,7 @@ const mainNavItems = computed(() => {
                 icon: MessageSquareWarning,
             },
             {
-                title: 'Phone Integrations',
+                title: 'Telephone Integrations',
                 href: '/telephone',
                 icon: Phone,
             },
