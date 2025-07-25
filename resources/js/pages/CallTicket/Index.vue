@@ -3,7 +3,6 @@ import AppLayout from '@/layouts/AppLayout.vue';
 import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import { ref, watch } from 'vue';
-import { route } from 'ziggy-js';
 import { usePage } from '@inertiajs/vue3';
 import { Inertia } from '@inertiajs/inertia';
 
@@ -65,7 +64,7 @@ function fetchPage(url: string | null) {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="callTicket in callTickets.data" :key="callTicket.id" class="hover:bg-gray-800">
+                            <tr v-for="callTicket in callTickets.data" :key="callTicket.id" class="hover:bg-gray-900">
                                 <td class="border border-gray-300 px-4 py-2">{{ callTicket.caller_name }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ callTicket.caller_number }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ callTicket.status }}</td>
