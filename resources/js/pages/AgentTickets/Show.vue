@@ -110,9 +110,6 @@ function updateStatus() {
     updatingStatus.value = true;
     statusError.value = null;
     Inertia.put(route('call-tickets.update', props.callTicket.id), { status: status.value }, {
-        onSuccess: () => {
-            // Optionally update local callTicket.status here if needed
-        },
         onError: (errors) => {
             statusError.value = errors.status ? errors.status[0] : 'Failed to update status.';
         },
