@@ -3,6 +3,7 @@
 use App\Http\Controllers\CallLogController;
 use App\Http\Controllers\CallTicketController;
 use App\Http\Controllers\CallTicketReassignController;
+use App\Http\Controllers\PhoneIntegrationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('reports', [ReportController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('reports.index');
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('telephone', [PhoneIntegrationController::class, 'index'])->name('telephone.index');
+    Route::get('telephone/3cx', [PhoneIntegrationController::class, 'threeCX'])->name('telephone.3cx');
+    Route::get('telephone/twilio', [PhoneIntegrationController::class, 'twilio'])->name('telephone.twilio');
+});
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';
